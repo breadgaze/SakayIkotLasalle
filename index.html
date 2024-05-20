@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAKAY Online Payment System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #3DAE9C;
+            color: white;
+            padding: 1em;
+            text-align: center;
+        }
+        nav {
+            background-color: #000000;
+            overflow: hidden;
+        }
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        main {
+            padding: 2em;
+        }
+        .content {
+            background-color: white;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1em;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1em;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        .qr-code {
+            text-align: center;
+            margin-top: 1em;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>SAKAY Online Payment System</h2>
+        <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/436616805_1158780748905159_3750568842624443012_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGuYtKkwB77ifeEMP99cMM2CDc4Bd-5GskINzgF37kayU9rU3SjfN7rv-R9U8QJOZnBVONdedIRT2xHGP5-UlXb&_nc_ohc=uRB7oFV4DZgQ7kNvgGU40Vu&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QFDrcQYXwS_-7cvtP9K7eFyWcCSdlLnEvgyKn4vrTF3SA&oe=66729480" alt="Sakay"  style="width:300px;height:150px;"></a>
+        <p>Convenient fare payment for De La Salle University - Dasmarinas</p>
+        <div id="user-info" class="hidden">
+            <p>Account Name: <span id="account-name"></span></p>
+            <p>Account Number: <span id="account-number"></span></p>
+            <p>Balance: <span id="account-balance"></span> pesos</p>
+        </div>
+    </header>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#topup">Top-Up</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <main>
+        <div class="content" id="login">
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        <div class="content hidden" id="home">
+            <h2>Welcome to SAKAY</h2>
+            <p>SAKAY is a student-centered agency that offers a seamless and convenient fare payment transaction service for the Ikot La Salle e-jeep shuttle service in De La Salle University - Dasmarinas. We aim to provide a cashless payment method for the university’s employees and students. This product is inspired by beep™ Cards mostly used in LRT and MRT trains, including P2P buses, PUVs, etc.</p>
+        </div>
+        <div class="content hidden" id="features">
+            <h2>Our Features</h2>
+            <p><center><h3>WHAT IS SAKAY?</center></h3> Sakay is a contactless fare payment transaction service that allows passengers to pay fares in just one tap. It offers a seamless and convenient service for the Ikot La Salle e-jeep shuttle service in De La Salle University - Dasmariñas. This product is inspired by beep cards mostly used in LRT and MRT trains, including P2P buses, PUVs, etc.
+</p>
+<p><center><h3>HOW DOES SAKAY WORK?</center></h3> Sakay features an automated fare collection (AFC) system designed with efficiency, convenience and security in mind for a streamlined fare collection process, ensuring a seamless experience for Lasallian passengers and transit operators. Sakay offers various payment methods, such as mainly through the use of a transit card that allows them to simply tap Sakay card to the card reader to pay their fare. With Sakay, you’ll be able to enjoy seamless traveling through card or mobile devices, ensuring a safer cash transaction from passengers to transit operators.</p>
+<p><center><h3>EXCLUSIVE FOR IKOT LASALLE</center></h3> Sakay is available exclusively for DLSU-D’s Ikot La Salle service shuttle. Sakay is deeply committed to accessibility ensuring that not only the convenience of the passengers that is valued but also aims to set a new standard for inclusivity within the university’s service shuttle. The brand demonstrates its commitment by uring that the system is intuitive, easy to use, and accessible for students and employees without compromising on functionality or efficiency.</p>
+        </div>
+        <div class="content hidden" id="topup">
+            <h2>Top-Up Your SAKAY Account</h2>
+            <form id="topup-form">
+                <label for="amount">Enter Amount (pesos):</label>
+                <input type="number" id="amount" name="amount" min="1" required>
+                <button type="submit">Top-Up</button>
+            </form>
+            <div class="qr-code" id="qr-code"></div>
+            <div id="thank-you-message" class="hidden"></div>
+        </div>
+        <div class="content hidden" id="contact">
+            <h2>Contact Us</h2>
+            <p>If you have any questions or need assistance, please contact us at:</p>
+            <p>Email: SakayDLSUD@gmail.com</p>
+            <p>Phone: +63 991 844 1733</p>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 SAKAY Online Payment System. All rights reserved.</p>
+    </footer>
+    <script>
+        let account = {
+            username: '',
+            password: '',
+            accountName: '',
+            accountNumber: '',
+            balance: 0
+        };
+
+        // Function to generate a random account number
+        function generateAccountNumber() {
+            return Math.floor(Math.random() * 900000000) + 100000000;
+        }
+
+        // Function to display user information after login
+        function displayUserInfo(user) {
+            document.getElementById('account-name').textContent = user.accountName;
+            document.getElementById('account-number').textContent = user.accountNumber;
+            document.getElementById('account-balance').textContent = user.balance;
+            document.getElementById('user-info').classList.remove('hidden');
+        }
+
+        // Login form handling
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username && password) {
+                account = {
+                    username: username,
+                    password: password,
+                    accountName: username,
+                    accountNumber: generateAccountNumber(),
+                    balance: 0  // Initial balance
+                };
+                displayUserInfo(account);
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('home').classList.remove('hidden');
+                document.getElementById('features').classList.remove('hidden');
+                document.getElementById('topup').classList.remove('hidden');
+                document.getElementById('contact').classList.remove('hidden');
+            } else {
+                alert('Please enter a username and password');
+            }
+        });
+
+        // Top-up form handling
+        document.getElementById('topup-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const amount = parseInt(document.getElementById('amount').value);
+            if (amount >= 1) {
+                const qrCodeContainer = document.getElementById('qr-code');
+                qrCodeContainer.innerHTML = '';
+                const qrCode = 'sakay://' + Math.random().toString(36).substring(2, 15) + amount;
+                const img = document.createElement('img');
+                img.src = 'https://api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(qrCode) + '&size=150x150';
+                qrCodeContainer.appendChild(img);
+                
+                // Update balance
+                account.balance += amount;
+                document.getElementById('account-balance').textContent = account.balance;
+                
+                // Display thank you message
+                const thankYouMessage = document.getElementById('thank-you-message');
+                thankYouMessage.textContent = `Thank you ${account.accountName}! for trusting our website :)`;
+                thankYouMessage.classList.remove('hidden');
+            } else {
+                alert('Please enter a valid amount.');
+            }
+        });
+    </script>
+</body>
+</html>
+
